@@ -60,4 +60,49 @@ class ProductControllerTest extends TestCase
         $this->assertEquals(201, $response->status());
     }
 
+    /** @test */
+    public function it_can_get_a_product_by_id()
+    {
+        // Create a product
+        $product = Product::factory()->create();
+
+        // Call the show method on the controller to get the product by its ID
+        $response = $this->productController->show($product->id);
+
+        // Assert: Check if the response status is 200 (OK)
+        $this->assertEquals(200, $response->getStatusCode());
+
+        // Assert: Check if the response JSON contains the expected product data
+        $this->assertEquals($product->toArray(), $response->getData(true));
+    }
+
+    // /** @test */
+    // public function it_can_update_a_product()
+    // {
+    //     $product = Product::factory()->create();
+    //     $newData = [
+    //         'name' => $this->faker->name,
+    //         'description' => $this->faker->sentence,
+    //         'price' => $this->faker->randomNumber(2),
+    //         'is_show' => $this->faker->boolean,
+    //         'category' => $this->faker->word,
+    //     ];
+
+    //     $request = new \Illuminate\Http\Request([], $newData);
+
+    //     $response = $this->productController->update($request, $product->id);
+
+    //     $this->assertInstanceOf(Product::class, $response);
+    //     $this->assertDatabaseHas('products', $newData);
+    // }
+
+    // /** @test */
+    // public function it_can_delete_a_product()
+    // {
+    //     $product = Product::factory()->create();
+
+    //     $this->productController->destroy($product->id);
+
+    //     $this->assertDeleted($product);
+    // }
 }
