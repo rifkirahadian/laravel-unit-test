@@ -70,5 +70,16 @@ class ProductRepositoryTest extends TestCase
         $this->assertNotNull($product->fresh()->deleted_at);
     }
 
-    
+    /** @test */
+    public function it_can_get_product_by_id()
+    {
+        // Create a product
+        $product = Product::factory()->create();
+
+        // Call the getById method on the repository
+        $retrievedProduct = $this->repository->getById($product->id);
+
+        // Assert: Check that the retrieved product matches the original product
+        $this->assertEquals($product->toArray(), $retrievedProduct->toArray());
+    }
 }
