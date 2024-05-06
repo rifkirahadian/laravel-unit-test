@@ -35,4 +35,29 @@ class ProductControllerTest extends TestCase
         $this->assertEquals($products->toArray(), $response->toArray());
     }
 
+    /** @test */
+    public function it_can_store_a_product()
+    {
+        // Create a mock instance of ProductRequest
+        $request = Mockery::mock(ProductRequest::class);
+
+        // Define the expected validated data
+        $validatedData = [
+            'name' => 'Test Product',
+            'description' => 'This is a test product',
+            'price' => 10,
+            'is_show' => true,
+            'category' => 'Test Category',
+        ];
+
+        // Mock the validated method to return the expected data
+        $request->shouldReceive('validated')->once()->andReturn($validatedData);
+
+        // Act: Call the store method on the controller with the mocked ProductRequest object
+        $response = $this->productController->store($request);
+
+        // Assert: Check if the response status is 201 (created)
+        $this->assertEquals(201, $response->status());
+    }
+
 }
