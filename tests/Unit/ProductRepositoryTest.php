@@ -82,4 +82,14 @@ class ProductRepositoryTest extends TestCase
         // Assert: Check that the retrieved product matches the original product
         $this->assertEquals($product->toArray(), $retrievedProduct->toArray());
     }
+
+    /** @test */
+    public function it_can_get_all_products()
+    {
+        // Call the getAll method on the repository
+        $retrievedProducts = $this->repository->getAll();
+
+        // Assert: Check that the number of retrieved products matches the number of created products
+        $this->assertCount(3, $retrievedProducts);
+    }
 }
