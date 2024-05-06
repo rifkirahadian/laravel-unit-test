@@ -56,4 +56,19 @@ class ProductRepositoryTest extends TestCase
         $this->assertEquals($updatedData['price'], $updatedProduct->price);
     }
 
+    /** @test */
+    /** @test */
+    public function it_can_delete_a_product()
+    {
+        // Create a product
+        $product = Product::factory()->create();
+
+        // Call the delete method on the repository
+        $this->repository->delete($product);
+
+        // Assert: Check that the product has been soft deleted
+        $this->assertNotNull($product->fresh()->deleted_at);
+    }
+
+    
 }
