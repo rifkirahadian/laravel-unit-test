@@ -76,25 +76,33 @@ class ProductControllerTest extends TestCase
         $this->assertEquals($product->toArray(), $response->getData(true));
     }
 
-    // /** @test */
-    // public function it_can_update_a_product()
-    // {
-    //     $product = Product::factory()->create();
-    //     $newData = [
-    //         'name' => $this->faker->name,
-    //         'description' => $this->faker->sentence,
-    //         'price' => $this->faker->randomNumber(2),
-    //         'is_show' => $this->faker->boolean,
-    //         'category' => $this->faker->word,
-    //     ];
+    /** @test */
+    public function it_can_update_a_product()
+    {
+        // Create a product
+        $product = Product::factory()->create();
 
-    //     $request = new \Illuminate\Http\Request([], $newData);
+        // Define the updated data
+        $updatedData = [
+            'name' => 'Updated Product Name',
+            'description' => 'Updated Product Description',
+            'price' => 20,
+            'is_show' => true,
+            'category' => 'Updated Category',
+        ];
 
-    //     $response = $this->productController->update($request, $product->id);
+        // Create a mock instance of ProductRequest
+        $request = Mockery::mock(ProductRequest::class);
 
-    //     $this->assertInstanceOf(Product::class, $response);
-    //     $this->assertDatabaseHas('products', $newData);
-    // }
+        // Mock the validated method to return the expected data
+        $request->shouldReceive('validated')->once()->andReturn($updatedData);
+
+        // Call the update method on the controller to update the product
+        $response = $this->productController->update($request, $product->id);
+
+        // Assert: Check if the response status is 200 (OK)
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 
     // /** @test */
     // public function it_can_delete_a_product()
