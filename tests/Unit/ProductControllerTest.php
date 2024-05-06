@@ -105,12 +105,12 @@ class ProductControllerTest extends TestCase
     }
 
     // /** @test */
-    // public function it_can_delete_a_product()
-    // {
-    //     $product = Product::factory()->create();
+    public function it_can_delete_a_product()
+    {
+        $product = Product::factory()->create();
 
-    //     $this->productController->destroy($product->id);
+        $this->productController->destroy($product->id);
 
-    //     $this->assertDeleted($product);
-    // }
+        $this->assertDeleted($product);
+    }
 }
