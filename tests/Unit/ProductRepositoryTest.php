@@ -35,4 +35,25 @@ class ProductRepositoryTest extends TestCase
         $this->assertInstanceOf(Product::class, $product);
         $this->assertDatabaseHas('products', $data);
     }
+
+    /** @test */
+    public function it_can_update_a_product()
+    {
+        // Create a product
+        $product = Product::factory()->create();
+
+        // Update data
+        $updatedData = [
+            'name' => 'Updated Product',
+            'price' => 20,
+        ];
+
+        // Call the update method on the repository
+        $updatedProduct = $this->repository->update($product, $updatedData);
+
+        // Assert: Check that the product was updated successfully
+        $this->assertEquals($updatedData['name'], $updatedProduct->name);
+        $this->assertEquals($updatedData['price'], $updatedProduct->price);
+    }
+
 }
