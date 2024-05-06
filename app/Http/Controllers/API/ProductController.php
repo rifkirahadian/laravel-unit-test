@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Repositories\ProductRepository;
+use Exception;
 
 /**
  * @OA\Info(
@@ -170,7 +171,14 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = $this->productRepository->getById($id);
+        try {
+            $product = $this->productRepository->getById($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'message'   => 'Product Not Found'
+            ], 404);
+        }
+
         return response()->json($product);
     }
 
@@ -213,9 +221,16 @@ class ProductController extends Controller
     public function update(ProductRequest $request, $id)
     {
         $data = $request->validated();
-        $product = $this->productRepository->getById($id);
-        $product = $this->productRepository->update($product, $data);
-        return response()->json($product);
+        try {
+            $product = $this->productRepository->getById($id);
+            $product = $this->productRepository->update($product, $data);
+            return response()->json($product);
+        } catch (Exception $e) {
+            return response()->json([
+                'message'   => 'Product Not Found'
+            ], 404);
+        }
+        
     }
 
     /**
@@ -253,8 +268,15 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = $this->productRepository->getById($id);
-        $this->productRepository->delete($product);
+        try {
+            $product = $this->productRepository->getById($id);
+            $this->productRepository->delete($product);
+        } catch (Exception $th) {
+            return response()->json([
+                'message'   => 'Product Not Found'
+            ], 404);
+        }
+        
         return response()->json([
             'message'   => 'Product Deleted'
         ], 204);
